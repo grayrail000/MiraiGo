@@ -70,6 +70,7 @@ type QQClient struct {
 	// session info
 	qwebSeq        atomic.Int64
 	sig            *auth.SigInfo
+	SigOpen        *auth.SigInfo
 	highwaySession *highway.Session
 	// pwdFlag        bool
 	// timeDiff       int64
