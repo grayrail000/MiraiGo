@@ -6,10 +6,10 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
-	"github.com/Mrs4s/MiraiGo/utils"
+	"github.com/grayrail000/MiraiGo/binary"
+	"github.com/grayrail000/MiraiGo/client/pb/msg"
+	"github.com/grayrail000/MiraiGo/internal/proto"
+	"github.com/grayrail000/MiraiGo/utils"
 )
 
 // *----- Definitions -----* //

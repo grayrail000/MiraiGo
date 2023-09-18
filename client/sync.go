@@ -7,13 +7,13 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Mrs4s/MiraiGo/binary/jce"
-	"github.com/Mrs4s/MiraiGo/client/internal/network"
-	"github.com/Mrs4s/MiraiGo/client/pb/msf"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/client/pb/oidb"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
-	"github.com/Mrs4s/MiraiGo/message"
+	"github.com/grayrail000/MiraiGo/binary/jce"
+	"github.com/grayrail000/MiraiGo/client/internal/network"
+	"github.com/grayrail000/MiraiGo/client/pb/msf"
+	"github.com/grayrail000/MiraiGo/client/pb/msg"
+	"github.com/grayrail000/MiraiGo/client/pb/oidb"
+	"github.com/grayrail000/MiraiGo/internal/proto"
+	"github.com/grayrail000/MiraiGo/message"
 )
 
 func init() {

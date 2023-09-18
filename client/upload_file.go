@@ -10,14 +10,14 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/Mrs4s/MiraiGo/client/internal/highway"
-	"github.com/Mrs4s/MiraiGo/client/internal/network"
-	"github.com/Mrs4s/MiraiGo/client/pb/cmd0x346"
-	"github.com/Mrs4s/MiraiGo/client/pb/exciting"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/internal/proto"
-	"github.com/Mrs4s/MiraiGo/message"
-	"github.com/Mrs4s/MiraiGo/utils"
+	"github.com/grayrail000/MiraiGo/client/internal/highway"
+	"github.com/grayrail000/MiraiGo/client/internal/network"
+	"github.com/grayrail000/MiraiGo/client/pb/cmd0x346"
+	"github.com/grayrail000/MiraiGo/client/pb/exciting"
+	"github.com/grayrail000/MiraiGo/client/pb/msg"
+	"github.com/grayrail000/MiraiGo/internal/proto"
+	"github.com/grayrail000/MiraiGo/message"
+	"github.com/grayrail000/MiraiGo/utils"
 )
 
 func init() {
