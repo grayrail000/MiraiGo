@@ -443,7 +443,10 @@ func (c *QQClient) GetTokenA() map[string]interface{} {
 		"token_A4":  hex.EncodeToString(c.Sig.TGT),
 		"share_key": hex.EncodeToString(c.Sig.D2Key),
 		"Appid":     c.transport.Version.AppId,
-		"Guid":      hex.EncodeToString(c.Device().Guid),
+		"GUID_MD5":  hex.EncodeToString(c.Device().Guid),
+		"T10E":      hex.EncodeToString(c.Sig.UserStKey),
+		"T133":      hex.EncodeToString(c.Sig.T133),
+		"T134":      hex.EncodeToString(c.oicq.WtSessionTicketKey),
 	}
 	return data
 }
