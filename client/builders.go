@@ -130,9 +130,9 @@ func (c *QQClient) buildDeviceLockLoginPacket() (uint16, []byte) {
 		Command: 20,
 		List: [][]byte{
 			tlv.T8(2052),
-			tlv.T104(c.sig.T104),
+			tlv.T104(c.Sig.T104),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
-			tlv.T401(c.sig.G),
+			tlv.T401(c.Sig.G),
 		},
 	})
 	r := network.Request{
@@ -192,7 +192,7 @@ func (c *QQClient) buildQRCodeFetchRequestPacket(size, margin, ecLevel uint32) (
 	return seq, payload
 }
 
-func (c *QQClient) buildQRCodeResultQueryRequestPacket(sig []byte) (uint16, []byte) {
+func (c *QQClient) buildQRCodeResultQueryRequestPacket(Sig []byte) (uint16, []byte) {
 	// old := c.version()
 	// c.transport.Version = auth.AndroidWatch.Version()
 	seq := c.nextSeq()
@@ -205,7 +205,7 @@ func (c *QQClient) buildQRCodeResultQueryRequestPacket(sig []byte) (uint16, []by
 				w.WriteByte(1)    // const
 				w.WriteUInt32(8)  // product type
 				w.WriteUInt32(16) // app id
-				w.WriteBytesShort(sig)
+				w.WriteBytesShort(Sig)
 				w.WriteUInt64(0) // const
 				w.WriteByte(8)   // const
 				w.WriteBytesShort(EmptyBytes)
@@ -294,19 +294,19 @@ func (c *QQClient) buildQRCodeLoginPacket(t106, t16a, t318 []byte) (uint16, []by
 	return seq, c.transport.PackPacket(&r)
 }
 
-func (c *QQClient) buildCaptchaPacket(result string, sign []byte) (uint16, []byte) {
+func (c *QQClient) buildCaptchaPacket(result string, Sign []byte) (uint16, []byte) {
 	seq := c.nextSeq()
 	t := &oicq.TLV{
 		Command: 2,
 		List: [][]byte{
-			tlv.T2(result, sign),
+			tlv.T2(result, Sign),
 			tlv.T8(2052),
-			tlv.T104(c.sig.T104),
+			tlv.T104(c.Sig.T104),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
 		},
 	}
-	if c.sig.T547 != nil {
-		t.Append(tlv.T(0x547, c.sig.T547))
+	if c.Sig.T547 != nil {
+		t.Append(tlv.T(0x547, c.Sig.T547))
 	}
 	if wrapper.DandelionEnergy != nil {
 		if t544 := tlv.T544(uint64(c.Uin), "810_2", 2, c.version().SdkVersion, c.Device().Guid, c.version().SortVersionName, wrapper.DandelionEnergy); t544 != nil {
@@ -331,9 +331,9 @@ func (c *QQClient) buildSMSRequestPacket() (uint16, []byte) {
 		Command: 8,
 		List: [][]byte{
 			tlv.T8(2052),
-			tlv.T104(c.sig.T104),
+			tlv.T104(c.Sig.T104),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
-			tlv.T174(c.sig.T174),
+			tlv.T174(c.Sig.T174),
 			tlv.T17A(9),
 			tlv.T197(),
 		},
@@ -355,11 +355,11 @@ func (c *QQClient) buildSMSCodeSubmitPacket(code string) (uint16, []byte) {
 		Command: 7,
 		List: [][]byte{
 			tlv.T8(2052),
-			tlv.T104(c.sig.T104),
+			tlv.T104(c.Sig.T104),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
-			tlv.T174(c.sig.T174),
+			tlv.T174(c.Sig.T174),
 			tlv.T17C(code),
-			tlv.T401(c.sig.G),
+			tlv.T401(c.Sig.G),
 			tlv.T198(),
 		},
 	}
@@ -387,12 +387,12 @@ func (c *QQClient) buildTicketSubmitPacket(ticket string) (uint16, []byte) {
 		List: [][]byte{
 			tlv.T193(ticket),
 			tlv.T8(2052),
-			tlv.T104(c.sig.T104),
+			tlv.T104(c.Sig.T104),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
 		},
 	}
-	if c.sig.T547 != nil {
-		t.Append(tlv.T(0x547, c.sig.T547))
+	if c.Sig.T547 != nil {
+		t.Append(tlv.T(0x547, c.Sig.T547))
 	}
 	if wrapper.DandelionEnergy != nil {
 		if t544 := tlv.T544(uint64(c.Uin), "810_2", 2, c.version().SdkVersion, c.Device().Guid, c.version().SortVersionName, wrapper.DandelionEnergy); t544 != nil {
@@ -411,18 +411,18 @@ func (c *QQClient) buildTicketSubmitPacket(ticket string) (uint16, []byte) {
 	return seq, c.transport.PackPacket(&r)
 }
 
-func (c *QQClient) buildRequestTgtgtNopicsigPacket() (uint16, []byte) {
+func (c *QQClient) buildRequestTgtgtNopicSigPacket() (uint16, []byte) {
 	seq := c.nextSeq()
 	t := &oicq.TLV{
 		Command: 15,
 		List: [][]byte{
 			tlv.T18(16, uint32(c.Uin)),
 			tlv.T1(uint32(c.Uin), c.Device().IpAddress),
-			tlv.T(0x106, c.sig.EncryptedA1),
+			tlv.T(0x106, c.Sig.EncryptedA1),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
 			tlv.T100(c.version().SSOVersion, 2, c.version().MainSigMap),
 			tlv.T107(0),
-			tlv.T108(c.sig.Ksid),
+			tlv.T108(c.Sig.Ksid),
 			tlv.T144(
 				c.Device().AndroidId,
 				c.Device().GenDeviceInfoData(),
@@ -438,7 +438,7 @@ func (c *QQClient) buildRequestTgtgtNopicsigPacket() (uint16, []byte) {
 			),
 			tlv.T142(c.version().ApkId),
 			tlv.T145(c.Device().Guid),
-			tlv.T16A(c.sig.SrmToken),
+			tlv.T16A(c.Sig.SrmToken),
 			tlv.T154(seq),
 			tlv.T141(c.Device().SimInfo, c.Device().APN),
 			tlv.T8(2052),
@@ -449,7 +449,7 @@ func (c *QQClient) buildRequestTgtgtNopicsigPacket() (uint16, []byte) {
 			}),
 			tlv.T147(16, []byte(c.version().SortVersionName), c.version().ApkSign),
 			tlv.T177(c.version().BuildTime, c.version().SdkVersion),
-			tlv.T400(c.sig.G, c.Uin, c.Device().Guid, c.sig.Dpwd, 1, 16, c.sig.RandSeed),
+			tlv.T400(c.Sig.G, c.Uin, c.Device().Guid, c.Sig.Dpwd, 1, 16, c.Sig.RandSeed),
 			tlv.T187(c.Device().MacAddress),
 			tlv.T188(c.Device().AndroidId),
 			tlv.T194(c.Device().IMSIMd5),
@@ -494,9 +494,9 @@ func (c *QQClient) buildRequestChangeSigPacket(changeD2 bool) (uint16, []byte) {
 		Command: 11,
 		List: [][]byte{
 			tlv.T100(c.version().SSOVersion, 100, c.version().MainSigMap),
-			tlv.T10A(c.sig.TGT),
+			tlv.T10A(c.Sig.TGT),
 			tlv.T116(c.version().MiscBitmap, c.version().SubSigmap),
-			tlv.T108(c.sig.Ksid),
+			tlv.T108(c.Sig.Ksid),
 		},
 	}
 	if !changeD2 {
@@ -504,10 +504,10 @@ func (c *QQClient) buildRequestChangeSigPacket(changeD2 bool) (uint16, []byte) {
 	}
 	var key []byte
 	if changeD2 {
-		h := md5.Sum(c.sig.D2Key)
+		h := md5.Sum(c.Sig.D2Key)
 		key = h[:]
 	} else {
-		key = c.sig.TGTKey
+		key = c.Sig.TGTKey
 	}
 	t.Append(
 		tlv.T144(
@@ -526,7 +526,7 @@ func (c *QQClient) buildRequestChangeSigPacket(changeD2 bool) (uint16, []byte) {
 		tlv.T112(c.Uin),
 	)
 	if changeD2 {
-		t.Append(tlv.T143(c.sig.D2))
+		t.Append(tlv.T143(c.Sig.D2))
 	} else {
 		t.Append(tlv.T145(c.Device().Guid))
 	}
@@ -909,7 +909,7 @@ func (c *QQClient) buildGroupMemberInfoRequestPacket(groupCode, uin int64) (uint
 
 // MessageSvc.PbGetMsg
 func (c *QQClient) buildGetMessageRequestPacket(flag msg.SyncFlag, msgTime int64) (uint16, []byte) {
-	cook := c.sig.SyncCookie
+	cook := c.Sig.SyncCookie
 	if cook == nil {
 		cook, _ = proto.Marshal(&msg.SyncCookie{
 			Time:   proto.Some(msgTime),
@@ -1205,7 +1205,7 @@ func (c *QQClient) buildAppInfoRequestPacket(id string) (uint16, []byte) {
 		TraceId:    proto.String(fmt.Sprintf("%v_%v_%v", c.Uin, time.Now().Format("0102150405"), rand.Int63())),
 	}
 	payload, _ := proto.Marshal(body)
-	packet := packets.BuildUniPacket(c.Uin, seq, "LightAppSvc.mini_app_info.GetAppInfoById", 1, c.SessionId, EmptyBytes, c.sigInfo.d2Key, payload)
+	packet := packets.BuildUniPacket(c.Uin, seq, "LightAppSvc.mini_app_info.GetAppInfoById", 1, c.SessionId, EmptyBytes, c.SigInfo.d2Key, payload)
 	return seq, packet
 }
 */

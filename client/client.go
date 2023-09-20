@@ -69,8 +69,7 @@ type QQClient struct {
 
 	// session info
 	qwebSeq        atomic.Int64
-	sig            *auth.SigInfo
-	SigOpen        *auth.SigInfo
+	Sig            *auth.SigInfo
 	highwaySession *highway.Session
 	// pwdFlag        bool
 	// timeDiff       int64
@@ -190,7 +189,7 @@ func NewClientMd5(uin int64, passwordMd5 [16]byte) *QQClient {
 		PasswordMd5: passwordMd5,
 		AllowSlider: true,
 		TCP:         &network.TCPClient{},
-		sig: &auth.SigInfo{
+		Sig: &auth.SigInfo{
 			OutPacketSessionID: []byte{0x02, 0xB0, 0x5B, 0x8B},
 		},
 		msgSvcCache:     utils.NewCache[unit](time.Second * 15),
@@ -200,7 +199,7 @@ func NewClientMd5(uin int64, passwordMd5 [16]byte) *QQClient {
 		highwaySession:  new(highway.Session),
 	}
 
-	cli.transport = &network.Transport{Sig: cli.sig}
+	cli.transport = &network.Transport{Sig: cli.Sig}
 	cli.oicq = oicq.NewCodec(cli.Uin)
 	{ // init atomic values
 		cli.SequenceId.Store(int32(rand.Intn(100000)))
@@ -228,7 +227,7 @@ func (c *QQClient) UseDevice(info *auth.Device) {
 	c.transport.Version = info.Protocol.Version()
 	c.transport.Device = info
 	c.highwaySession.AppID = int32(c.version().AppId)
-	c.sig.Ksid = []byte(fmt.Sprintf("|%s|A8.2.7.27f6ea96", info.IMEI))
+	c.Sig.Ksid = []byte(fmt.Sprintf("|%s|A8.2.7.27f6ea96", info.IMEI))
 }
 
 func (c *QQClient) Release() {
@@ -270,14 +269,14 @@ func (c *QQClient) TokenLogin(token []byte) error {
 	{
 		r := binary.NewReader(token)
 		c.Uin = r.ReadInt64()
-		c.sig.D2 = r.ReadBytesShort()
-		c.sig.D2Key = r.ReadBytesShort()
-		c.sig.TGT = r.ReadBytesShort()
-		c.sig.SrmToken = r.ReadBytesShort()
-		c.sig.T133 = r.ReadBytesShort()
-		c.sig.EncryptedA1 = r.ReadBytesShort()
+		c.Sig.D2 = r.ReadBytesShort()
+		c.Sig.D2Key = r.ReadBytesShort()
+		c.Sig.TGT = r.ReadBytesShort()
+		c.Sig.SrmToken = r.ReadBytesShort()
+		c.Sig.T133 = r.ReadBytesShort()
+		c.Sig.EncryptedA1 = r.ReadBytesShort()
 		c.oicq.WtSessionTicketKey = r.ReadBytesShort()
-		c.sig.OutPacketSessionID = r.ReadBytesShort()
+		c.Sig.OutPacketSessionID = r.ReadBytesShort()
 		// SystemDeviceInfo.TgtgtKey = r.ReadBytesShort()
 		c.Device().TgtgtKey = r.ReadBytesShort()
 	}
@@ -307,8 +306,8 @@ func (c *QQClient) FetchQRCodeCustomSize(size, margin, ecLevel uint32) (*QRCodeL
 	return i.(*QRCodeLoginResponse), nil
 }
 
-func (c *QQClient) QueryQRCodeStatus(sig []byte) (*QRCodeLoginResponse, error) {
-	i, err := c.sendAndWait(c.buildQRCodeResultQueryRequestPacket(sig))
+func (c *QQClient) QueryQRCodeStatus(Sig []byte) (*QRCodeLoginResponse, error) {
+	i, err := c.sendAndWait(c.buildQRCodeResultQueryRequestPacket(Sig))
 	if err != nil {
 		return nil, errors.Wrap(err, "query result error")
 	}
@@ -328,8 +327,8 @@ func (c *QQClient) QRCodeLogin(info *QRCodeLoginInfo) (*LoginResponse, error) {
 }
 
 // SubmitCaptcha send captcha to server
-func (c *QQClient) SubmitCaptcha(result string, sign []byte) (*LoginResponse, error) {
-	seq, packet := c.buildCaptchaPacket(result, sign)
+func (c *QQClient) SubmitCaptcha(result string, Sign []byte) (*LoginResponse, error) {
+	seq, packet := c.buildCaptchaPacket(result, Sign)
 	rsp, err := c.sendAndWait(seq, packet)
 	if err != nil {
 		c.Disconnect()
@@ -379,7 +378,7 @@ func (c *QQClient) RequestSMS() bool {
 }
 
 func (c *QQClient) init(tokenLogin bool) error {
-	if len(c.sig.G) == 0 {
+	if len(c.Sig.G) == 0 {
 		c.warning("device lock is disabled. HTTP API may fail.")
 	}
 	c.highwaySession.Uin = strconv.FormatInt(c.Uin, 10)
@@ -422,14 +421,14 @@ func (c *QQClient) init(tokenLogin bool) error {
 func (c *QQClient) GenToken() []byte {
 	return binary.NewWriterF(func(w *binary.Writer) {
 		w.WriteUInt64(uint64(c.Uin))
-		w.WriteBytesShort(c.sig.D2)
-		w.WriteBytesShort(c.sig.D2Key)
-		w.WriteBytesShort(c.sig.TGT)
-		w.WriteBytesShort(c.sig.SrmToken)
-		w.WriteBytesShort(c.sig.T133)
-		w.WriteBytesShort(c.sig.EncryptedA1)
+		w.WriteBytesShort(c.Sig.D2)
+		w.WriteBytesShort(c.Sig.D2Key)
+		w.WriteBytesShort(c.Sig.TGT)
+		w.WriteBytesShort(c.Sig.SrmToken)
+		w.WriteBytesShort(c.Sig.T133)
+		w.WriteBytesShort(c.Sig.EncryptedA1)
 		w.WriteBytesShort(c.oicq.WtSessionTicketKey)
-		w.WriteBytesShort(c.sig.OutPacketSessionID)
+		w.WriteBytesShort(c.Sig.OutPacketSessionID)
 		w.WriteBytesShort(c.Device().TgtgtKey)
 	})
 }
@@ -670,11 +669,11 @@ func (c *QQClient) SolveFriendRequest(req *NewFriendRequest, accept bool) {
 }
 
 func (c *QQClient) getSKey() string {
-	if c.sig.SKeyExpiredTime < time.Now().Unix() && len(c.sig.G) > 0 {
+	if c.Sig.SKeyExpiredTime < time.Now().Unix() && len(c.Sig.G) > 0 {
 		c.debug("skey expired. refresh...")
-		_, _ = c.sendAndWait(c.buildRequestTgtgtNopicsigPacket())
+		_, _ = c.sendAndWait(c.buildRequestTgtgtNopicSigPacket())
 	}
-	return string(c.sig.SKey)
+	return string(c.Sig.SKey)
 }
 
 func (c *QQClient) getCookies() string {
@@ -684,7 +683,7 @@ func (c *QQClient) getCookies() string {
 func (c *QQClient) getCookiesWithDomain(domain string) string {
 	cookie := c.getCookies()
 
-	if psKey, ok := c.sig.PsKeyMap[domain]; ok {
+	if psKey, ok := c.Sig.PsKeyMap[domain]; ok {
 		return fmt.Sprintf("%s p_uin=o%d; p_skey=%s;", cookie, c.Uin, psKey)
 	} else {
 		return cookie

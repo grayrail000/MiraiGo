@@ -36,8 +36,8 @@ var (
 			MiscBitmap:      150470524,
 			SubSigmap:       0x10400,
 			MainSigMap: WLOGIN_A5 | WLOGIN_RESERVED | WLOGIN_STWEB | WLOGIN_A2 | WLOGIN_ST |
-				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_SIG64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
-				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSIG | WLOGIN_LHSIG | WLOGIN_PAYTOKEN, // 16724722
+				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_Sig64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
+				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSig | WLOGIN_LHSig | WLOGIN_PAYTOKEN, // 16724722
 			QUA:      "V1_AND_SQ_8.9.63_4194_YYB_D",
 			Protocol: AndroidPhone,
 		},
@@ -54,8 +54,8 @@ var (
 			MiscBitmap:      150470524,
 			SubSigmap:       0x10400,
 			MainSigMap: WLOGIN_A5 | WLOGIN_RESERVED | WLOGIN_STWEB | WLOGIN_A2 | WLOGIN_ST |
-				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_SIG64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
-				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSIG | WLOGIN_LHSIG | WLOGIN_PAYTOKEN, // 16724722
+				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_Sig64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
+				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSig | WLOGIN_LHSig | WLOGIN_PAYTOKEN, // 16724722
 			QUA:      "V1_AND_SQ_8.9.63_4194_YYB_D",
 			Protocol: AndroidPad,
 		},
@@ -71,8 +71,8 @@ var (
 			MiscBitmap:      16252796,
 			SubSigmap:       0x10400,
 			MainSigMap: WLOGIN_A5 | WLOGIN_RESERVED | WLOGIN_STWEB | WLOGIN_A2 | WLOGIN_ST |
-				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_SIG64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
-				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSIG | WLOGIN_LHSIG | WLOGIN_PAYTOKEN, // 16724722
+				WLOGIN_LSKEY | WLOGIN_SKEY | WLOGIN_Sig64 | 1<<16 | WLOGIN_VKEY | WLOGIN_D2 |
+				WLOGIN_SID | WLOGIN_PSKEY | WLOGIN_AQSig | WLOGIN_LHSig | WLOGIN_PAYTOKEN, // 16724722
 			Protocol: AndroidWatch,
 		},
 		IPad: {
@@ -135,7 +135,7 @@ const (
 	_
 	_
 	WLOGIN_SKEY
-	WLOGIN_SIG64
+	WLOGIN_Sig64
 	WLOGIN_OPENKEY
 	WLOGIN_TOKEN
 	_
@@ -143,8 +143,8 @@ const (
 	WLOGIN_D2
 	WLOGIN_SID
 	WLOGIN_PSKEY
-	WLOGIN_AQSIG
-	WLOGIN_LHSIG
+	WLOGIN_AQSig
+	WLOGIN_LHSig
 	WLOGIN_PAYTOKEN
 	WLOGIN_PF
 	WLOGIN_DA2
@@ -248,12 +248,12 @@ type appVersionFile struct {
 	AppKey          string       `json:"app_key"`
 	SortVersionName string       `json:"sort_version_name"`
 	BuildTime       uint32       `json:"build_time"`
-	ApkSign         string       `json:"apk_sign"` // hex encoded
+	ApkSign         string       `json:"apk_Sign"` // hex encoded
 	SdkVersion      string       `json:"sdk_version"`
 	SSOVersion      uint32       `json:"sso_version"`
 	MiscBitmap      uint32       `json:"misc_bitmap"`
-	MainSigMap      uint32       `json:"main_sig_map"`
-	SubSigmap       uint32       `json:"sub_sig_map"`
+	MainSigMap      uint32       `json:"main_Sig_map"`
+	SubSigmap       uint32       `json:"sub_Sig_map"`
 	QUA             string       `json:"qua"`
 	ProtocolType    ProtocolType `json:"protocol_type"`
 }
