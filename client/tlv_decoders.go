@@ -96,6 +96,7 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 	s.LoginBitmap = 0
 	s.SrmToken = utils.Select(m[0x16a], s.SrmToken)
 	s.T133 = utils.Select(m[0x133], s.T133)
+	s.T114 = m[0x114]
 	s.EncryptedA1 = utils.Select(m[0x106], s.EncryptedA1)
 	s.TGT = m[0x10a]
 	s.TGTKey = m[0x10d]

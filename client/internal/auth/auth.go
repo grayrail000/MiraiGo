@@ -205,6 +205,7 @@ type SigInfo struct {
 
 	SrmToken        []byte // study room manager | 0x16a
 	T133            []byte
+	T114            []byte
 	EncryptedA1     []byte
 	UserStKey       []byte
 	UserStWebSig    []byte
