@@ -9,7 +9,7 @@ import (
 
 // DEB7 prefix
 type DEB7ReqBody struct {
-	// optional StSignInStatusReq signInStatusReq = 1;
+	// optional StSignInStatusReq SignInStatusReq = 1;
 	SignInWriteReq *StSignInWriteReq `protobuf:"bytes,2,opt"`
 	_              [0]func()
 }

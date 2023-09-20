@@ -21,7 +21,7 @@ type (
 		GroupCode int64
 		Sender    int64
 
-		sig    []byte
+		Sig    []byte
 		client *QQClient
 	}
 	TempSessionSource int
@@ -40,8 +40,8 @@ const (
 )
 
 func (c *QQClient) c2cMessageSyncProcessor(rsp *msg.GetMessageResponse, info network.RequestParams) {
-	c.sig.SyncCookie = rsp.SyncCookie
-	c.sig.PubAccountCookie = rsp.PubAccountCookie
+	c.Sig.SyncCookie = rsp.SyncCookie
+	c.Sig.PubAccountCookie = rsp.PubAccountCookie
 	// c.msgCtrlBuf = rsp.MsgCtrlBuf
 	if rsp.UinPairMsgs == nil {
 		return
@@ -173,7 +173,7 @@ func tempSessionDecoder(c *QQClient, pMsg *msg.Message, _ network.RequestParams)
 			info := &TempSessionInfo{
 				Source: 0,
 				Sender: pMsg.Head.FromUin.Unwrap(),
-				sig:    pMsg.Head.C2CTmpMsgHead.Sig,
+				Sig:    pMsg.Head.C2CTmpMsgHead.Sig,
 				client: c,
 			}
 

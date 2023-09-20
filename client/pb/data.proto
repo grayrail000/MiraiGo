@@ -16,7 +16,7 @@ message SSOReserveField {
 }
 
 message SsoSecureInfo {
-  bytes sec_sig = 1;
+  bytes sec_Sig = 1;
   bytes sec_device_token = 2;
   bytes sec_extra = 3;
 }
@@ -115,7 +115,7 @@ message MessageItem {
   int32 msgType = 3;
   int32 msgSeq = 4;
   int64 msgUid = 5;
-  bytes sig = 7;
+  bytes Sig = 7;
 }
 
 message SubD4 {

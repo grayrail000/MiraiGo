@@ -292,7 +292,7 @@ message ExtensionReq {
   int64 type = 2;
   string dstPhonenum = 3;
   int32 phoneConvertType = 4;
-  bytes sig = 20;
+  bytes Sig = 20;
   int64 routeId = 100;
   DelMessageReq delMessageReq = 90100;
   int32 downloadUrlType = 90200;

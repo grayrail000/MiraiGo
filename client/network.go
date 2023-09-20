@@ -361,7 +361,7 @@ func (c *QQClient) netLoop() {
 		}
 		data, _ := c.TCP.ReadBytes(int(l) - 4)
 		resp, err := c.transport.ReadResponse(data)
-		// pkt, err := packets.ParseIncomingPacket(data, c.sig.D2Key)
+		// pkt, err := packets.ParseIncomingPacket(data, c.Sig.D2Key)
 		if err != nil {
 			c.error("parse incoming packet error: %v", err)
 			if errors.Is(err, network.ErrSessionExpired) || errors.Is(err, network.ErrPacketDropped) {

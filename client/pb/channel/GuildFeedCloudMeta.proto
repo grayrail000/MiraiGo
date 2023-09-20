@@ -58,7 +58,7 @@ message StChannelShareInfo {
   optional uint64 feedPublishAt = 3;
   optional StChannelSign channelSign = 4;
   optional uint64 updateDurationMs = 5;
-  optional StChannelShareSign sign = 6;
+  optional StChannelShareSign Sign = 6;
 }
 
 message StChannelShareSign {

@@ -94,7 +94,7 @@ message HttpConnHead {
 
 message LoginSig {
   optional uint32 type = 1;
-  optional bytes sig = 2;
+  optional bytes Sig = 2;
 }
 
 message RedirectMsg {

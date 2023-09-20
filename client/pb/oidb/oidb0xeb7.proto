@@ -4,8 +4,8 @@ option go_package = "github.com/grayrail000/MiraiGo/client/pb/oidb";
 
 // DEB7 prefix
 message DEB7ReqBody {
-  // optional StSignInStatusReq signInStatusReq = 1;
-  optional StSignInWriteReq signInWriteReq = 2;
+  // optional StSignInStatusReq SignInStatusReq = 1;
+  optional StSignInWriteReq SignInWriteReq = 2;
 }
 
 message DEB7Ret {
@@ -14,8 +14,8 @@ message DEB7Ret {
 }
 
 message DEB7RspBody {
-  optional StSignInStatusRsp signInStatusRsp = 1;
-  optional StSignInWriteRsp signInWriteRsp = 2;
+  optional StSignInStatusRsp SignInStatusRsp = 1;
+  optional StSignInWriteRsp SignInWriteRsp = 2;
 }
 
 message SignInStatusBase {
@@ -37,8 +37,8 @@ message SignInStatusGroupScore {
 
 message SignInStatusNotInfo {
   optional string buttonWord = 1;
-  optional string signDescWordLeft = 2;
-  optional string signDescWordRight = 3;
+  optional string SignDescWordLeft = 2;
+  optional string SignDescWordRight = 3;
 }
 
 message SignInStatusYesterdayFirst {
@@ -50,8 +50,8 @@ message SignInStatusYesterdayFirst {
 message StDaySignedInfo {
   optional string uid = 1;
   optional string uidGroupNick = 2;
-  optional int64 signedTimeStamp = 3;
-  optional int32 signInRank = 4;
+  optional int64 SignedTimeStamp = 3;
+  optional int32 SignInRank = 4;
 }
 
 message StDaySignedListReq {
@@ -76,8 +76,8 @@ message StDaySignedPage {
 message StKingSignedInfo {
   optional string uid = 1;
   optional string groupNick = 2;
-  optional int64 signedTimeStamp = 3;
-  optional int32 signedCount = 4;
+  optional int64 SignedTimeStamp = 3;
+  optional int32 SignedCount = 4;
 }
 
 message StKingSignedListReq {

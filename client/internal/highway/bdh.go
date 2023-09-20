@@ -136,7 +136,7 @@ func (s *Session) Upload(trans Transaction) ([]byte, error) {
 		id              = 0
 	)
 	doUpload := func() error {
-		// send signal complete uploading
+		// send Signal complete uploading
 		defer func() {
 			atomic.AddUint32(&completedThread, 1)
 			cond.Signal()

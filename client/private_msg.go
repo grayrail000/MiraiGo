@@ -101,11 +101,11 @@ func (c *QQClient) SendGroupTempMessage(groupCode, target int64, m *message.Send
 	}
 }
 
-func (c *QQClient) sendWPATempMessage(target int64, sig []byte, m *message.SendingMessage) *message.TempMessage {
+func (c *QQClient) sendWPATempMessage(target int64, Sig []byte, m *message.SendingMessage) *message.TempMessage {
 	mr := int32(rand.Uint32())
 	seq := c.nextFriendSeq()
 	t := time.Now().Unix()
-	_, pkt := c.buildWPATempSendingPacket(target, sig, seq, mr, t, m)
+	_, pkt := c.buildWPATempSendingPacket(target, Sig, seq, mr, t, m)
 	_ = c.sendPacket(pkt)
 	c.stat.MessageSent.Add(1)
 	return &message.TempMessage{
@@ -125,7 +125,7 @@ func (s *TempSessionInfo) SendMessage(m *message.SendingMessage) (*message.TempM
 	case GroupSource:
 		return s.client.SendGroupTempMessage(s.GroupCode, s.Sender, m), nil
 	case ConsultingSource:
-		return s.client.sendWPATempMessage(s.Sender, s.sig, m), nil
+		return s.client.sendWPATempMessage(s.Sender, s.Sig, m), nil
 	default:
 		return nil, errors.New("unsupported message source")
 	}
@@ -141,7 +141,7 @@ func (c *QQClient) buildGetOneDayRoamMsgRequest(target, lastMsgTime, random int6
 		ReadCnt:     proto.Some(count),
 	}
 	payload, _ := proto.Marshal(req)
-	packet := packets.BuildUniPacket(c.Uin, seq, "MessageSvc.PbGetOneDayRoamMsg", 1, c.SessionId, EmptyBytes, c.sigInfo.d2Key, payload)
+	packet := packets.BuildUniPacket(c.Uin, seq, "MessageSvc.PbGetOneDayRoamMsg", 1, c.SessionId, EmptyBytes, c.SigInfo.d2Key, payload)
 	return seq, packet
 }
 */
@@ -193,11 +193,11 @@ func (c *QQClient) buildGroupTempSendingPacket(groupUin, target int64, msgSeq, r
 	return c.uniPacket("MessageSvc.PbSendMsg", payload)
 }
 
-func (c *QQClient) buildWPATempSendingPacket(uin int64, sig []byte, msgSeq, r int32, time int64, m *message.SendingMessage) (uint16, []byte) {
+func (c *QQClient) buildWPATempSendingPacket(uin int64, Sig []byte, msgSeq, r int32, time int64, m *message.SendingMessage) (uint16, []byte) {
 	req := &msg.SendMessageRequest{
 		RoutingHead: &msg.RoutingHead{WpaTmp: &msg.WPATmp{
 			ToUin: proto.Uint64(uint64(uin)),
-			Sig:   sig,
+			Sig:   Sig,
 		}},
 		ContentHead: &msg.ContentHead{PkgNum: proto.Int32(1)},
 		MsgBody: &msg.MessageBody{

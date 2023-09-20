@@ -64,7 +64,7 @@ message ChannelInfo {
 
 message ChannelLoginSig {
   optional uint32 type = 1;
-  optional bytes sig = 2;
+  optional bytes Sig = 2;
   optional uint32 appid = 3;
 }
 

@@ -113,7 +113,7 @@ func (e *ChannelQuoteElement) pack(patternId string, isPatternData bool) content
 			"channel_content": content{
 				"channel_info": content{
 					"name": e.DisplayText,
-					"sign": content{
+					"Sign": content{
 						"guild_id":   strconv.FormatUint(e.GuildId, 10),
 						"channel_id": strconv.FormatUint(e.ChannelId, 10),
 					},

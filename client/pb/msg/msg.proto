@@ -130,7 +130,7 @@ message Trans0x211 {
 
 message WPATmp {
   optional uint64 toUin = 1;
-  optional bytes sig = 2;
+  optional bytes Sig = 2;
 }
 
 message C2C {
@@ -408,7 +408,7 @@ message Ptt {
   optional int32 serverIp = 9;
   optional int32 serverPort = 10;
   optional bool boolValid = 11;
-  optional bytes signature = 12;
+  optional bytes Signature = 12;
   optional bytes shortcut = 13;
   optional bytes fileKey = 14;
   optional int32 magicPttIndex = 15;
@@ -465,7 +465,7 @@ message NotOnlineImage {
 
 message NotOnlineFile {
   optional int32 fileType = 1;
-  optional bytes sig = 2;
+  optional bytes Sig = 2;
   optional bytes fileUuid = 3;
   optional bytes fileMd5 = 4;
   optional bytes fileName = 5;
@@ -591,7 +591,7 @@ message CustomFace {
   optional int32 serverIp = 8;
   optional int32 serverPort = 9;
   optional int32 fileType = 10;
-  optional bytes signature = 11;
+  optional bytes Signature = 11;
   optional int32 useful = 12;
   optional bytes md5 = 13;
   optional string thumbUrl = 14;
@@ -684,8 +684,8 @@ message C2CTempMessageHead {
   optional int32 serviceType = 2;
   optional int64 groupUin = 3;
   optional int64 groupCode = 4;
-  optional bytes sig = 5;
-  optional int32 sigType = 6;
+  optional bytes Sig = 5;
+  optional int32 SigType = 6;
   optional string fromPhone = 7;
   optional string toPhone = 8;
   optional int32 lockDisplay = 9;

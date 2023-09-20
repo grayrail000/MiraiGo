@@ -49,7 +49,7 @@ func (e *session) fetchPubKey(uin int64) {
 	}
 	e.SvrPublicKeyVer = pubKey.Meta.PubKeyVer
 	key, _ := hex.DecodeString(pubKey.Meta.PubKey)
-	e.init(key) // todo check key sign
+	e.init(key) // todo check key Sign
 }
 
 func (e *session) init(svrPubKey []byte) {

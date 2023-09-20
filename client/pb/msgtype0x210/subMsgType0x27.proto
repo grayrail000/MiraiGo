@@ -16,7 +16,7 @@ message AppointmentNotify {
   optional uint32 unreadCount = 5;
   optional string joinWording = 6;
   optional string viewWording = 7;
-  optional bytes sig = 8;
+  optional bytes Sig = 8;
   optional bytes eventInfo = 9;
   optional bytes nearbyEventInfo = 10;
   optional bytes feedEventInfo = 11;
@@ -28,7 +28,7 @@ message BinaryMsg {
 }
 
 message ChatMatchInfo {
-  optional bytes sig = 1;
+  optional bytes Sig = 1;
   optional uint64 uin = 2;
   optional uint64 matchUin = 3;
   optional bytes tipsWording = 4;
@@ -66,7 +66,7 @@ message FanpaiziNotify {
   optional uint64 fromUin = 1;
   optional string fromNick = 2;
   optional bytes tipsContent = 3;
-  optional bytes sig = 4;
+  optional bytes Sig = 4;
 }
 
 message ForwardBody {

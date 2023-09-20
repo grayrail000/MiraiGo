@@ -233,7 +233,7 @@ message SystemMsgAction {
 message SystemMsgActionInfo {
   int32  type = 1;
   int64 groupCode = 2;
-  bytes sig = 3;
+  bytes Sig = 3;
   string msg = 50;
   int32 groupId = 51;
   string remark = 52;

@@ -42,7 +42,7 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 		}
 	*/
 	if t108, ok := m[0x108]; ok {
-		c.sig.Ksid = t108
+		c.Sig.Ksid = t108
 	}
 
 	var (
@@ -90,9 +90,9 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 	}
 	c.oicq.WtSessionTicketKey = utils.Select(m[0x134], c.oicq.WtSessionTicketKey)
 
-	// we don't use `c.sigInfo = &auth.SigInfo{...}` here,
-	// because we need keep other fields in `c.sigInfo`
-	s := c.sig
+	// we don't use `c.SigInfo = &auth.SigInfo{...}` here,
+	// because we need keep other fields in `c.SigInfo`
+	s := c.Sig
 	s.LoginBitmap = 0
 	s.SrmToken = utils.Select(m[0x16a], s.SrmToken)
 	s.T133 = utils.Select(m[0x133], s.T133)
@@ -109,7 +109,7 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 
 	s.PsKeyMap = psKeyMap
 	s.Pt4TokenMap = pt4TokenMap
-	if len(c.sig.EncryptedA1) > 51+16 {
+	if len(c.Sig.EncryptedA1) > 51+16 {
 		data, cl := binary.OpenWriterF(func(w *binary.Writer) {
 			w.Write(c.PasswordMd5[:])
 			w.WriteUInt32(0) // []byte{0x00, 0x00, 0x00, 0x00}...
@@ -117,7 +117,7 @@ func (c *QQClient) decodeT119(data, ek []byte) {
 		})
 		key := md5.Sum(data)
 		cl()
-		decrypted := binary.NewTeaCipher(key[:]).Decrypt(c.sig.EncryptedA1)
+		decrypted := binary.NewTeaCipher(key[:]).Decrypt(c.Sig.EncryptedA1)
 		if len(decrypted) > 51+16 {
 			dr := binary.NewReader(decrypted)
 			dr.ReadBytes(51)
@@ -134,9 +134,9 @@ func (c *QQClient) decodeT119R(data []byte) {
 	tea := binary.NewTeaCipher(c.Device().TgtgtKey)
 	m, _ := tlv.NewDecoder(2, 2).DecodeRecordMap(tea.Decrypt(data)[2:])
 	if t120, ok := m[0x120]; ok {
-		c.sig.SKey = t120
-		c.sig.SKeyExpiredTime = time.Now().Unix() + 21600
-		c.debug("skey updated: %v", c.sig.SKey)
+		c.Sig.SKey = t120
+		c.Sig.SKeyExpiredTime = time.Now().Unix() + 21600
+		c.debug("skey updated: %v", c.Sig.SKey)
 	}
 	if t11a, ok := m[0x11a]; ok {
 		c.Nickname, c.Age, c.Gender = readT11A(t11a)

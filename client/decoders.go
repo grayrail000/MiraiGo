@@ -43,13 +43,13 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		return nil, err
 	}
 	if m.Exists(0x402) {
-		c.sig.Dpwd = []byte(utils.RandomString(16))
-		c.sig.T402 = m[0x402]
-		h := md5.Sum(append(append(c.Device().Guid, c.sig.Dpwd...), c.sig.T402...))
-		c.sig.G = h[:]
+		c.Sig.Dpwd = []byte(utils.RandomString(16))
+		c.Sig.T402 = m[0x402]
+		h := md5.Sum(append(append(c.Device().Guid, c.Sig.Dpwd...), c.Sig.T402...))
+		c.Sig.G = h[:]
 	}
 	if m.Exists(0x546) {
-		c.sig.T547 = auth.CalcPow(m[0x546])
+		c.Sig.T547 = auth.CalcPow(m[0x546])
 	}
 	// c.logger.Info("login response %v", t)
 	if t == 0 { // login success
@@ -60,7 +60,7 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		//  	c.decodeT161(t161)
 		// }
 		if m.Exists(0x403) {
-			c.sig.RandSeed = m[0x403]
+			c.Sig.RandSeed = m[0x403]
 		}
 		c.decodeT119(m[0x119], c.Device().TgtgtKey)
 		return LoginResponse{
@@ -68,7 +68,7 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		}, nil
 	}
 	if t == 2 {
-		c.sig.T104 = m[0x104]
+		c.Sig.T104 = m[0x104]
 		if m.Exists(0x192) {
 			return LoginResponse{
 				Success:   false,
@@ -79,15 +79,15 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		}
 		if m.Exists(0x165) { // image
 			imgData := binary.NewReader(m[0x105])
-			signLen := imgData.ReadUInt16()
+			SignLen := imgData.ReadUInt16()
 			imgData.ReadUInt16()
-			sign := imgData.ReadBytes(int(signLen))
+			Sign := imgData.ReadBytes(int(SignLen))
 			return LoginResponse{
 				Success:      false,
 				Code:         t,
 				Error:        NeedCaptcha,
 				CaptchaImage: imgData.ReadAvailable(),
-				CaptchaSign:  sign,
+				CaptchaSign:  Sign,
 			}, nil
 		} else {
 			return LoginResponse{
@@ -109,9 +109,9 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 
 	if t == 160 || t == 239 {
 		if t174, ok := m[0x174]; ok { // 短信验证
-			c.sig.T104 = m[0x104]
-			c.sig.T174 = t174
-			c.sig.RandSeed = m[0x403]
+			c.Sig.T104 = m[0x104]
+			c.Sig.T174 = t174
+			c.Sig.RandSeed = m[0x403]
 			phone := func() string {
 				r := binary.NewReader(m[0x178])
 				r.ReadStringShort()
@@ -137,7 +137,7 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		}
 
 		if _, ok := m[0x17b]; ok { // 二次验证
-			c.sig.T104 = m[0x104]
+			c.Sig.T104 = m[0x104]
 			return LoginResponse{
 				Success: false,
 				Code:    t,
@@ -164,8 +164,8 @@ func decodeLoginResponse(c *QQClient, pkt *network.Packet) (any, error) {
 	}
 
 	if t == 204 {
-		c.sig.T104 = m[0x104]
-		c.sig.RandSeed = m[0x403]
+		c.Sig.T104 = m[0x104]
+		c.Sig.RandSeed = m[0x403]
 		return c.sendAndWait(c.buildDeviceLockLoginPacket())
 	} // drive lock
 
@@ -233,7 +233,7 @@ func decodeExchangeEmpResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		c.decodeT119R(m[0x119])
 	}
 	if cmd == 11 {
-		h := md5.Sum(c.sig.D2Key)
+		h := md5.Sum(c.Sig.D2Key)
 		c.decodeT119(m[0x119], h[:])
 	}
 	return nil, nil
@@ -263,7 +263,7 @@ func decodeTransEmpResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		if code != 0 {
 			return nil, errors.Errorf("wtlogin.trans_emp sub cmd 0x31 error: %v", code)
 		}
-		sig := body.ReadBytesShort()
+		Sig := body.ReadBytesShort()
 		body.ReadUInt16()
 		m, err := tlv.NewDecoder(2, 2).DecodeRecordMap(body.ReadAvailable())
 		if err != nil {
@@ -273,7 +273,7 @@ func decodeTransEmpResponse(c *QQClient, pkt *network.Packet) (any, error) {
 			return &QRCodeLoginResponse{
 				State:     QRCodeImageFetch,
 				ImageData: m[0x17],
-				Sig:       sig,
+				Sig:       Sig,
 			}, nil
 		}
 		return nil, errors.Errorf("wtlogin.trans_emp sub cmd 0x31 error: image not found")
@@ -309,7 +309,7 @@ func decodeTransEmpResponse(c *QQClient, pkt *network.Packet) (any, error) {
 		}
 		c.Uin = body.ReadInt64()
 		c.highwaySession.Uin = strconv.FormatInt(c.Uin, 10)
-		body.ReadInt32() // sig create time
+		body.ReadInt32() // Sig create time
 		body.ReadUInt16()
 		m, err := tlv.NewDecoder(2, 2).DecodeRecordMap(body.ReadAvailable())
 		if err != nil {
@@ -848,7 +848,7 @@ func decodeSidExpiredPacket(c *QQClient, pkt *network.Packet) (any, error) {
 	/*
 		_, err := c.sendAndWait(c.buildRequestChangeSigPacket(true))
 		if err != nil {
-			return nil, errors.Wrap(err, "resign client error")
+			return nil, errors.Wrap(err, "reSign client error")
 		}
 		if err = c.registerClient(); err != nil {
 			return nil, errors.Wrap(err, "register error")

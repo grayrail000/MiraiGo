@@ -18,7 +18,7 @@ message SubCmd0x501ReqBody {
   optional uint32 bid = 8;
 }
 message SubCmd0x501RspBody {
-  optional bytes sigSession = 1;
+  optional bytes SigSession = 1;
   optional bytes sessionKey = 2;
   repeated SrvAddrs addrs = 3;
 }

@@ -55,7 +55,7 @@ func (info *Device) RequestQImei() {
 		"params": params,
 		"time":   ts,
 		"nonce":  nonce,
-		"sign":   sign(key, params, fmt.Sprint(ts), nonce),
+		"Sign":   Sign(key, params, fmt.Sprint(ts), nonce),
 		"extra":  "",
 	})
 
@@ -78,7 +78,7 @@ func initPublicKey() *rsa.PublicKey {
 	return pub.(*rsa.PublicKey)
 }
 
-func sign(key, params, ts, nonce string) string {
+func Sign(key, params, ts, nonce string) string {
 	h := md5.Sum([]byte(key + params + ts + nonce + secret))
 	return hex.EncodeToString(h[:])
 }

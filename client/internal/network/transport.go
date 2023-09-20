@@ -156,7 +156,7 @@ func (t *Transport) PackSecSign(req *Request) []byte {
 	if wrapper.FekitGetSign == nil {
 		return []byte{}
 	}
-	sign, extra, token, err := wrapper.FekitGetSign(uint64(req.SequenceID), strconv.FormatInt(req.Uin, 10), req.CommandName, t.Version.QUA, req.Body)
+	Sign, extra, token, err := wrapper.FekitGetSign(uint64(req.SequenceID), strconv.FormatInt(req.Uin, 10), req.CommandName, t.Version.QUA, req.Body)
 	if err != nil {
 		return []byte{}
 	}
@@ -170,7 +170,7 @@ func (t *Transport) PackSecSign(req *Request) []byte {
 		IpStackType: 1,
 		MessageType: 0,
 		SecInfo: &pb.SsoSecureInfo{
-			SecSig:         sign,
+			SecSig:         Sign,
 			SecDeviceToken: token,
 			SecExtra:       extra,
 		},

@@ -18,7 +18,7 @@ type musicTypeInfo struct {
 	platform    uint32
 	sdkVersion  string
 	packageName string
-	signature   string
+	Signature   string
 }
 
 var musicType = [...]musicTypeInfo{
@@ -28,7 +28,7 @@ var musicType = [...]musicTypeInfo{
 		platform:    1,
 		sdkVersion:  "0.0.0",
 		packageName: "com.tencent.qqmusic",
-		signature:   "cbd27cd7c861227d013a25b2d10f0799",
+		Signature:   "cbd27cd7c861227d013a25b2d10f0799",
 	},
 	{ // NeteaseMusic
 		appID:       100495085,
@@ -36,7 +36,7 @@ var musicType = [...]musicTypeInfo{
 		platform:    1,
 		sdkVersion:  "0.0.0",
 		packageName: "com.netease.cloudmusic",
-		signature:   "da6b069da1e2982db3e386233f68d76d",
+		Signature:   "da6b069da1e2982db3e386233f68d76d",
 	},
 	{ // MiguMusic
 		appID:       1101053067,
@@ -44,7 +44,7 @@ var musicType = [...]musicTypeInfo{
 		platform:    1,
 		sdkVersion:  "0.0.0",
 		packageName: "cmccwm.mobilemusic",
-		signature:   "6cdc72a439cef99a3418d2a78aa28c73",
+		Signature:   "6cdc72a439cef99a3418d2a78aa28c73",
 	},
 	{ // KugouMusic
 		appID:       205141,
@@ -52,7 +52,7 @@ var musicType = [...]musicTypeInfo{
 		platform:    1,
 		sdkVersion:  "0.0.0",
 		packageName: "com.kugou.android",
-		signature:   "fe4a24d80fcf253a00676a808f62c2c6",
+		Signature:   "fe4a24d80fcf253a00676a808f62c2c6",
 	},
 	{ // KuwoMusic
 		appID:       100243533,
@@ -60,7 +60,7 @@ var musicType = [...]musicTypeInfo{
 		platform:    1,
 		sdkVersion:  "0.0.0",
 		packageName: "cn.kuwo.player",
-		signature:   "bf9ff4ffb4c558a34ee3fd52c223ebf5",
+		Signature:   "bf9ff4ffb4c558a34ee3fd52c223ebf5",
 	},
 }
 
@@ -111,7 +111,7 @@ func (c *QQClient) buildRichMsgSendingPacket(guild uint64, target int64, msg *me
 			Platform:           tp.platform,
 			SdkVersion:         tp.sdkVersion,
 			AndroidPackageName: tp.packageName,
-			AndroidSignature:   tp.signature,
+			AndroidSignature:   tp.Signature,
 		},
 		ExtInfo:  &oidb.DB77ExtInfo{MsgSeq: rand.Uint64()},
 		SendType: sendType,

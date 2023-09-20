@@ -54,7 +54,7 @@ message BusiLabel {
 }
 message BusiLoginSig {
   optional int32 type = 1;
-  optional bytes sig = 2;
+  optional bytes Sig = 2;
   optional int32 appid = 3;
 }
 message BusiRichUi {

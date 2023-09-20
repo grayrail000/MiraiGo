@@ -74,7 +74,7 @@ func (f *Feed) ToSendingPayload(selfUin int64) string {
 			"nick": f.Poster.Nickname,
 		},
 		"channelInfo": content{
-			"sign": content{
+			"Sign": content{
 				"guild_id":   strconv.FormatUint(f.GuildId, 10),
 				"channel_id": strconv.FormatUint(f.ChannelId, 10),
 			},

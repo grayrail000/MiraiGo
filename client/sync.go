@@ -155,11 +155,11 @@ func (c *QQClient) buildGetOfflineMsgRequestPacket() (uint16, []byte) {
 			Channel:          4,
 			Inst:             1,
 			ChannelEx:        1,
-			SyncCookie:       c.sig.SyncCookie,
+			SyncCookie:       c.Sig.SyncCookie,
 			SyncFlag:         0, // START
 			RambleFlag:       0,
 			GeneralAbi:       1,
-			PubAccountCookie: c.sig.PubAccountCookie,
+			PubAccountCookie: c.Sig.PubAccountCookie,
 		},
 		GroupMsg: &jce.SvcReqPullGroupMsgSeq{
 			VerifyType: 0,
@@ -170,7 +170,7 @@ func (c *QQClient) buildGetOfflineMsgRequestPacket() (uint16, []byte) {
 	flag := msg.SyncFlag_START
 	msgReq, _ := proto.Marshal(&msg.GetMessageRequest{
 		SyncFlag:           proto.Some(flag),
-		SyncCookie:         c.sig.SyncCookie,
+		SyncCookie:         c.Sig.SyncCookie,
 		RambleFlag:         proto.Int32(0),
 		ContextFlag:        proto.Int32(1),
 		OnlineSyncFlag:     proto.Int32(0),
@@ -220,11 +220,11 @@ func (c *QQClient) buildSyncMsgRequestPacket() (uint16, []byte) {
 			Channel:          4,
 			Inst:             1,
 			ChannelEx:        1,
-			SyncCookie:       c.sig.SyncCookie,
+			SyncCookie:       c.Sig.SyncCookie,
 			SyncFlag:         0, // START
 			RambleFlag:       0,
 			GeneralAbi:       1,
-			PubAccountCookie: c.sig.PubAccountCookie,
+			PubAccountCookie: c.Sig.PubAccountCookie,
 		},
 		GroupMask: 2,
 		EndSeq:    int64(rand.Uint32()),
@@ -233,7 +233,7 @@ func (c *QQClient) buildSyncMsgRequestPacket() (uint16, []byte) {
 	flag := msg.SyncFlag_START
 	msgReq := &msg.GetMessageRequest{
 		SyncFlag:           proto.Some(flag),
-		SyncCookie:         c.sig.SyncCookie,
+		SyncCookie:         c.Sig.SyncCookie,
 		RambleFlag:         proto.Int32(0),
 		ContextFlag:        proto.Int32(1),
 		OnlineSyncFlag:     proto.Int32(0),
@@ -244,7 +244,7 @@ func (c *QQClient) buildSyncMsgRequestPacket() (uint16, []byte) {
 	offMsg, _ := proto.Marshal(msgReq)
 	msgReq.MsgReqType = proto.Int32(2)
 	msgReq.SyncCookie = nil
-	msgReq.PubaccountCookie = c.sig.PubAccountCookie
+	msgReq.PubaccountCookie = c.Sig.PubAccountCookie
 	pubMsg, _ := proto.Marshal(msgReq)
 	buf := &jce.RequestDataVersion3{Map: map[string][]byte{
 		"req_PbOffMsg": jce.NewJceWriter().WriteBytes(append([]byte{0, 0, 0, 0}, offMsg...), 0).Bytes(),
@@ -276,7 +276,7 @@ func (c *QQClient) buildPrivateMsgReadedPacket(uin, time int64) (uint16, []byte)
 			PeerUin:      proto.Uint64(uint64(uin)),
 			LastReadTime: proto.Uint32(uint32(time)),
 		},
-	}, SyncCookie: c.sig.SyncCookie}})
+	}, SyncCookie: c.Sig.SyncCookie}})
 	return c.uniPacket("PbMessageSvc.PbMsgReadedReport", req)
 }
 
