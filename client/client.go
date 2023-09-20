@@ -437,17 +437,17 @@ func (c *QQClient) GenToken() []byte {
 // 兼容python
 func (c *QQClient) GetTokenA() map[string]interface{} {
 	data := map[string]interface{}{
-		"UIN":       fmt.Sprint(c.Uin),
-		"nickname":  c.Nickname,
-		"token_A2":  hex.EncodeToString(c.Sig.D2),
-		"token_A4":  hex.EncodeToString(c.Sig.TGT),
-		"share_key": hex.EncodeToString(c.Sig.D2Key),
-		"Appid":     c.transport.Version.AppId,
-		"GUID_MD5":  hex.EncodeToString(c.Device().Guid),
-		"T10E":      hex.EncodeToString(c.Sig.UserStKey),
-		"T114":      hex.EncodeToString(c.Sig.T114),
-		"T133":      hex.EncodeToString(c.Sig.T133),
-		"T134":      hex.EncodeToString(c.oicq.WtSessionTicketKey),
+		"UIN":      fmt.Sprint(c.Uin),
+		"nickname": c.Nickname,
+		"token_A2": hex.EncodeToString(c.Sig.D2),
+		"token_A4": hex.EncodeToString(c.Sig.TGT),
+		"Sharekey": hex.EncodeToString(c.Sig.D2Key),
+		"Appid":    c.transport.Version.AppId,
+		"GUID_MD5": hex.EncodeToString(c.Device().Guid),
+		"T10E":     hex.EncodeToString(c.Sig.UserStKey),
+		"T114":     hex.EncodeToString(c.Sig.T114),
+		"T133":     hex.EncodeToString(c.Sig.T133),
+		"T134":     hex.EncodeToString(c.oicq.WtSessionTicketKey),
 	}
 	return data
 }
