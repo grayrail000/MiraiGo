@@ -445,6 +445,7 @@ func (c *QQClient) GetTokenA() map[string]interface{} {
 		"Appid":     c.transport.Version.AppId,
 		"GUID_MD5":  hex.EncodeToString(c.Device().Guid),
 		"T10E":      hex.EncodeToString(c.Sig.UserStKey),
+		"T114":      hex.EncodeToString(c.Sig.T114),
 		"T133":      hex.EncodeToString(c.Sig.T133),
 		"T134":      hex.EncodeToString(c.oicq.WtSessionTicketKey),
 	}
