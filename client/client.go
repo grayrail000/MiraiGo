@@ -434,15 +434,18 @@ func (c *QQClient) GenToken() []byte {
 	})
 }
 
-func (c *QQClient) GetTokenA() map[string]string {
-	return map[string]string{
-		"UIN":       fmt.Sprint(c.Uin), // 假设 Uin 是整数，使用 fmt.Sprint 转换
-		"nickname":  c.Nickname,        // 假设 Nickname 已经是字符串
+// 兼容python
+func (c *QQClient) GetTokenA() map[string]interface{} {
+	data := map[string]interface{}{
+		"UIN":       fmt.Sprint(c.Uin),
+		"nickname":  c.Nickname,
 		"token_A2":  hex.EncodeToString(c.Sig.D2),
 		"token_A4":  hex.EncodeToString(c.Sig.TGT),
 		"share_key": hex.EncodeToString(c.Sig.D2Key),
+		"Appid":     c.transport.Version.AppId,
 		"Guid":      hex.EncodeToString(c.Device().Guid),
 	}
+	return data
 }
 
 func (c *QQClient) SetOnlineStatus(s UserOnlineStatus) {
