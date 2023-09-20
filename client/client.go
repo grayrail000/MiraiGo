@@ -2,6 +2,7 @@ package client
 
 import (
 	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"math/rand"
 	"net/netip"
@@ -431,6 +432,17 @@ func (c *QQClient) GenToken() []byte {
 		w.WriteBytesShort(c.Sig.OutPacketSessionID)
 		w.WriteBytesShort(c.Device().TgtgtKey)
 	})
+}
+
+func (c *QQClient) GetTokenA() map[string]string {
+	return map[string]string{
+		"UIN":       fmt.Sprint(c.Uin), // 假设 Uin 是整数，使用 fmt.Sprint 转换
+		"nickname":  c.Nickname,        // 假设 Nickname 已经是字符串
+		"token_A2":  hex.EncodeToString(c.Sig.D2),
+		"token_A4":  hex.EncodeToString(c.Sig.TGT),
+		"share_key": hex.EncodeToString(c.Sig.D2Key),
+		"Guid":      hex.EncodeToString(c.Device().Guid),
+	}
 }
 
 func (c *QQClient) SetOnlineStatus(s UserOnlineStatus) {
